@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
             Vector2 touchPosition = Touchscreen.current.primaryTouch.position.ReadValue();
             Vector3 worldPosition = mainCamera.ScreenToWorldPoint(touchPosition);
 
-            movementDirection = transform.position - worldPosition;
+            movementDirection = worldPosition - transform.position;
             movementDirection.z = 0f;
             movementDirection.Normalize();
 
@@ -80,6 +80,8 @@ public class PlayerMovement : MonoBehaviour
     }
     private void RotateToFaceVelocity()
     {
+        if (rb.velocity == Vector3.zero) { return; }
+        
         Quaternion targetRotation = Quaternion.LookRotation(rb.velocity, Vector3.back);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
