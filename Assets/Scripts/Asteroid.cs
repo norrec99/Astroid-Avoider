@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    [SerializeField] private PlayerHealth playerHealth;
     private void OnTriggerEnter(Collider other) 
     {
+        PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
+
+        if (playerHealth == null) { return; }
+
         if (other.CompareTag("Player"))
         {
             playerHealth.Crash();
         }    
+    }
+
+    private void OnBecameInvisible() 
+    {
+        Destroy(gameObject);    
     }
 }
